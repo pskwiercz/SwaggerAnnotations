@@ -1,22 +1,30 @@
 package com.pskwierc.swaggerannotations.model;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "books")
+@ApiModel(description = "All details about the book.")
 public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @ApiModelProperty(notes = "Database generated book ID")
     private long id;
 
     @Column(name = "author", nullable = false)
+    @ApiModelProperty(notes = "Author of the book")
     private String author;
 
     @Column(name = "title", nullable = false)
+    @ApiModelProperty(notes = "Book title")
     private String title;
 
     @Column(name = "isbn", nullable = false)
+    @ApiModelProperty(notes = "Book ISBN")
     private String isbn;
 
     public Book() {}
