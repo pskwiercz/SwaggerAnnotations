@@ -21,18 +21,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1")
-public class BookController {
+public class BookController implements BookControllerApi {
 
     @Autowired
     private BookRepository bookRepository;
 
 
+
+    @Override
     @GetMapping("/book")
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
 
 
+    @Override
     @GetMapping("/book/{id}")
     public ResponseEntity<Book> getBookById(@PathVariable(value = "id") Long bookId)
             throws ResourceNotFoundException {
@@ -41,14 +44,16 @@ public class BookController {
         return ResponseEntity.ok().body(book);
     }
 
+    @Override
     @PostMapping("/book")
     public Book createBook(@Valid @RequestBody Book book) {
         return bookRepository.save(book);
     }
 
+    @Override
     @PutMapping("/book/{id}")
     public ResponseEntity<Book> updateBook(@PathVariable(value = "id") Long bookId,
-                                                   @Valid @RequestBody Book bookDetails) throws ResourceNotFoundException {
+                                           @Valid @RequestBody Book bookDetails) throws ResourceNotFoundException {
         Book book = bookRepository.findById(bookId)
                 .orElseThrow(() -> new ResourceNotFoundException("Book not found for this id :: " + bookId));
         book.setAuthor(bookDetails.getAuthor());
@@ -58,6 +63,7 @@ public class BookController {
         return ResponseEntity.ok(updatedEmployee);
     }
 
+    @Override
     @DeleteMapping("/book/{id}")
     public Map<String, Boolean> deleteBook(@PathVariable(value = "id") Long bookId)
             throws ResourceNotFoundException {
